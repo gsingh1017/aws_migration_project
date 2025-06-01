@@ -4,6 +4,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 interface EC2StackProps extends cdk.StackProps {
     vpc: ec2.Vpc;
+    keyPairName: "cdk_test"; // Test key pair name for SSH access
 }
 
 export class EC2Stack extends cdk.Stack {
@@ -31,13 +32,15 @@ export class EC2Stack extends cdk.Stack {
             vpc: props.vpc,
             vpcSubnets: {
                 subnetType: ec2.SubnetType.PUBLIC,
-                availabilityZones: [props.vpc.availabilityZones[0]], // Ec2 placed in the first AZ
+                availabilityZones: [props.vpc.availabilityZones[0]], // EC2 placed in the first AZ
             },
             machineImage: new ec2.AmazonLinuxImage({
                 generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
             }),
             instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO), // t2.micro 
             securityGroup: securityGroupAZ1,
+
+            keyName: props.keyPairName, // Specify the key pair name for SSH access
         });   
         
         cdk.Tags.of(securityGroupAZ1).add('Name', 'Public-EC2-SG-AZ1');
@@ -63,13 +66,15 @@ export class EC2Stack extends cdk.Stack {
             vpc: props.vpc,
             vpcSubnets: {
                 subnetType: ec2.SubnetType.PUBLIC,
-                availabilityZones: [props.vpc.availabilityZones[1]], // Ec2 placed in the second AZ
+                availabilityZones: [props.vpc.availabilityZones[1]], // EC2 placed in the second AZ
             },
             machineImage: new ec2.AmazonLinuxImage({
                 generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
             }),
             instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO), // t2.micro 
             securityGroup: securityGroupAZ2,
+            
+            keyName: props.keyPairName, // Specify the key pair name for SSH access
         });   
         
         cdk.Tags.of(securityGroupAZ2).add('Name', 'Public-EC2-SG-AZ2');

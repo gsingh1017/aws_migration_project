@@ -11,4 +11,5 @@ const vpcStack = new CdkTypescriptStack(app, 'CdkTypescriptStack', {
 
 new EC2Stack(app, "MyEC2Stack", {
   vpc: vpcStack.vpc,
+  keyPairName: "cdk_test", // Test key pair name for SSH access
 });
