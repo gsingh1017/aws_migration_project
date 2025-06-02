@@ -1,11 +1,12 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 
 interface EC2StackProps extends cdk.StackProps {
     vpc: ec2.Vpc;
-    keyPairName: "cdk_test"; // Test key pair name for SSH access
+    ec2Role: iam.Role; // Role for EC2 instances to access AWS services
 }
 
 
@@ -16,20 +17,27 @@ export class EC2Stack extends cdk.Stack {
 
     constructor(scope: Construct, id: string, props: EC2StackProps) {
         super(scope, id, props);
-        
+
 
         // Security Group for EC2 instances
         this.ec2SecurityGroup = new ec2.SecurityGroup(this, 'EC2SecurityGroup', {
             vpc: props.vpc,
-            description: 'Security Group for EC2 Instance in AZ1',
+            description: 'Security Group for EC2 Instance',
             allowAllOutbound: true,
         });
 
-        // Allow inbound SSH traffic from my IP to EC2 instances
+        // Allow inbound SSH traffic from from any IPv4 to EC2 instances
         this.ec2SecurityGroup.addIngressRule(
-            ec2.Peer.ipv4('1.1.1.1/32'), // add own IP address here
+            ec2.Peer.anyIpv4(),
             ec2.Port.tcp(22), // SSH port
-            'Allow SSH access from my IP'
+            'Allow SSH access from from any IPv4 address'
+        );
+
+        // Allow inbound HTTP traffic from any IPv4 to EC2 instances
+        this.ec2SecurityGroup.addIngressRule(
+            ec2.Peer.anyIpv4(),
+            ec2.Port.tcp(80), // HTTP port
+            'Allow HTTP access from any IPv4 address'
         );
 
         cdk.Tags.of(this.ec2SecurityGroup).add('Name', 'Public-EC2-SG');
@@ -47,8 +55,8 @@ export class EC2Stack extends cdk.Stack {
             }),
             instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO), // t2.micro 
             securityGroup: this.ec2SecurityGroup, // Attach defined security group to the instance
-
-            keyName: props.keyPairName, // Allows SSH access using key pair "cdk_test"
+            role: props.ec2Role, // Attach the IAM role to the instance
+        
         });   
         
         cdk.Tags.of(instanceAZ1).add('Name', 'Public-EC2-Instance-AZ1');
@@ -66,8 +74,8 @@ export class EC2Stack extends cdk.Stack {
             }),
             instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO), // t2.micro 
             securityGroup: this.ec2SecurityGroup, // Attach defined security group to the instance
+            role: props.ec2Role, // Attach the IAM role to the instance
 
-            keyName: props.keyPairName, // Allows SSH access using key pair "cdk_test"
         });   
         
         cdk.Tags.of(instanceAZ2).add('Name', 'Public-EC2-Instance-AZ2');
