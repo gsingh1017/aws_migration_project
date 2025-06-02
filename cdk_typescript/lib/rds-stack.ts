@@ -6,7 +6,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 interface RDSStackProps extends cdk.StackProps {
     vpc: ec2.Vpc;
-    ec2SecurityGroupAccess: ec2.SecurityGroup; // Security group for EC2 instances
+    ec2SecurityGroupAccess: ec2.SecurityGroup;
 }
 
 
@@ -23,7 +23,7 @@ export class RDSStack extends cdk.Stack {
             allowAllOutbound: false,
         });
 
-        // Allow inbound traffic from EC2 Instance
+        // Allow inbound traffic from EC2 Instance Security Group
         rdsSecurityGroup.addIngressRule(
             ec2.Peer.securityGroupId(props.ec2SecurityGroupAccess.securityGroupId),
             ec2.Port.tcp(3306), // MySQL default port

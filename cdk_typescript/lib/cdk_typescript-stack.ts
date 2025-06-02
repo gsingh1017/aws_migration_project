@@ -4,6 +4,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 export class CdkTypescriptStack extends cdk.Stack {
 
+  // VPC to be used by other stacks
   public readonly vpc: ec2.Vpc;
 
   constructor(scope: Construct, id: string, props: cdk.StackProps) {
