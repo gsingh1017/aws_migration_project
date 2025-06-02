@@ -6,7 +6,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 
 interface RDSStackProps extends cdk.StackProps {
     vpc: ec2.Vpc;
-    ec2SecurityGroupAccess: ec2.SecurityGroup; // Security group for EC2 instance in Public Subnet AZ1
+    ec2SecurityGroupAccess: ec2.SecurityGroup; // Security group for EC2 instances
 }
 
 
@@ -15,13 +15,13 @@ export class RDSStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: RDSStackProps) {
         super(scope, id, props);
 
+
         // RDS Security Group
         const rdsSecurityGroup = new ec2.SecurityGroup(this, 'RDSSecurityGroup', {
             vpc: props.vpc,
             description: 'Security Group for RDS Instance',
             allowAllOutbound: false,
         });
-
 
         // Allow inbound traffic from EC2 Instance
         rdsSecurityGroup.addIngressRule(
@@ -30,8 +30,8 @@ export class RDSStack extends cdk.Stack {
             'Allow MySQL access from EC2 Instance in Public Subnet AZ1'
         );
         
-
         cdk.Tags.of(rdsSecurityGroup).add('Name', 'RDS-Security-Group');
+
 
         // RDS Instance
         const rdsInstance = new rds.DatabaseInstance(this, 'MyRDSDatabase', {
