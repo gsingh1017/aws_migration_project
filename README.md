@@ -1,8 +1,8 @@
-# Manual to IaC Migration (TechHealth Inc.)
+# Manual to IaC - AWS Migration (TechHealth Inc.)
 
 Deliverables:
 
-Access my detailed breakdown on Medium [here]()
+Access my detailed breakdown on Medium [here](https://medium.com/@gurniksingh/modernizing-aws-infrastructure-with-cdk-a-patient-portal-case-study-8193371a4855).
 
 Updated Architecture:
 
