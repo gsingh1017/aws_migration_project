@@ -26,9 +26,11 @@ export class EC2Stack extends cdk.Stack {
             allowAllOutbound: true,
         });
 
-        // Allow inbound SSH traffic from from any IPv4 to EC2 instances
+        /* Allow inbound SSH traffic from any IPv4 to EC2 instances
+         * Added for emergency access; restrict in production
+        */
         this.ec2SecurityGroup.addIngressRule(
-            ec2.Peer.anyIpv4(),
+            ec2.Peer.anyIpv4(), 
             ec2.Port.tcp(22), // SSH port
             'Allow SSH access from from any IPv4 address'
         );
