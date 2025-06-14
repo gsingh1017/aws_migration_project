@@ -6,7 +6,7 @@ Access my detailed breakdown on Medium [here](https://medium.com/@gurniksingh/mo
 
 ### Updated Architecture:
 
-![Updated_Architecture](images/Updated_Architecture.png)
+![Updated Architecture](images/Updated_Architecture.png)
 
 ------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ TechHealth Inc., a healthcare technology company, built their AWS infrastructure
 
 ### Current Infrastructure:
 
-![Initial_Architecture](images/Initial_Architecture.png)
+![Initial Architecture](images/Initial_Architecture.png)
 
 - Web application running on EC2 instances
 - MySQL RDS database storing patient data
