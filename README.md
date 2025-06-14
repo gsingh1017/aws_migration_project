@@ -6,7 +6,7 @@ Access my detailed breakdown on Medium [here](https://medium.com/@gurniksingh/mo
 
 ### Updated Architecture:
 
-![Updated Architecture](images/Updated_Architecture.png)
+
 
 ------------------------------------------------------------------
 
